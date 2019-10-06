@@ -40,8 +40,8 @@ class EA_gen():
                 # print(e)
                 continue      # 临时作处理：当0位除数 和 负数情况
             if check.check(elist, e_file='./exercise.txt', a_file='./answer.txt') == True:      # True表示检查后无重复
-                f.write(' '.join(elist) + ' =\n')
-                f2.write(answer + '\n')
+                f.write("题目" + str(count+1) + ": " + ' '.join(elist) + ' =\n')
+                f2.write("答案" + str(count+1) + ": " +answer + '\n')
                 count += 1
                 if count == self.gen_need:
                     break
@@ -173,6 +173,9 @@ def main():
         ea.gen_need = int(args.need)
         ea.gen_range = int(args.range)
         ea.gen()
+    else:
+        print("Please check -n -r options.")
+
 
 if __name__ == '__main__':
     main()
