@@ -4,6 +4,7 @@
 import re, os
 from random import randint
 from fractions import Fraction
+from goto import with_goto
 import check
 import argparse
 
@@ -31,11 +32,19 @@ class EA_gen():
         f2.seek(0)
         f.truncate()
         f2.truncate()
-        for i in range(self.gen_need):
-            elist, answer = self.gen_combine()
+        count = 0
+        while True:
+            try:
+                elist, answer = self.gen_combine()
+            except Exception as e:
+                # print(e)
+                continue      # 临时作处理：当0位除数 和 负数情况
             if check.check(elist, e_file='./exercise.txt', a_file='./answer.txt') == True:      # True表示检查后无重复
                 f.write(' '.join(elist) + ' =\n')
                 f2.write(answer + '\n')
+                count += 1
+                if count == self.gen_need:
+                    break
         f.close()
         f2.close()
 
@@ -62,7 +71,11 @@ class EA_gen():
 
         if bracket != 0:      # 插入括号
             elist = self.__bracket_insert(elist, bracket)
+
         answer = self.__get_answer(elist, bracket)
+        if re.search('-', answer):
+            raise Exception("Negative")     # 有负号就报错
+
         return elist, answer
 
     def __get_answer(self, elist, bracket):
@@ -160,12 +173,6 @@ def main():
         ea.gen_need = int(args.need)
         ea.gen_range = int(args.range)
         ea.gen()
-
-
-    # file = 'exercise.txt'
-    # answer = 2
-    # flag = check.check(list, answer, file)
-
 
 if __name__ == '__main__':
     main()
