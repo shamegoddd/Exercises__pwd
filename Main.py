@@ -41,7 +41,12 @@ class EA_gen():
                 continue      # 临时作处理：当0位除数 和 负数情况
             if check.check(elist, e_file='./exercise.txt', a_file='./answer.txt') == True:      # True表示检查后无重复
                 f.write("题目" + str(count+1) + ": " + ' '.join(elist) + ' =\n')
-                f2.write("答案" + str(count+1) + ": " +answer + '\n')
+                if re.search('/', answer):
+                    d , n = answer.split('/')
+                    if int(d) > int(n):
+                        print(answer)
+                        answer = self.__to_fraction(answer)
+                f2.write("答案" + str(count+1) + ": " + answer + '\n')
                 count += 1
                 if count == self.gen_need:
                     break
@@ -163,6 +168,16 @@ class EA_gen():
         # 调用fraction方法生成真分数
         if random_attach != 0:
             real_fraction = str(random_attach) + "'" + real_fraction
+        return real_fraction
+
+    def __to_fraction(self, fraction):
+        f = Fraction('11/2')
+        denominator = f.denominator
+        numerator = f.numerator
+        attach = denominator / numerator
+        denominator = denominator - attach * numerator
+        if attach != 0:
+            real_fraction = str(attach) + "'" + str(denominator) + '/' + str(numerator)
         return real_fraction
 
 def main():
