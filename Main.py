@@ -44,7 +44,7 @@ class EA_gen():
                 if re.search('/', answer):
                     d , n = answer.split('/')
                     if int(d) > int(n):
-                        print(answer)
+                        # print(answer)
                         answer = self.__to_fraction(answer)
                 f2.write("答案" + str(count+1) + ": " + answer + '\n')
                 count += 1
@@ -171,13 +171,13 @@ class EA_gen():
         return real_fraction
 
     def __to_fraction(self, fraction):
-        f = Fraction('11/2')
+        f = Fraction(fraction)
         denominator = f.denominator
         numerator = f.numerator
-        attach = denominator / numerator
-        denominator = denominator - attach * numerator
-        if attach != 0:
-            real_fraction = str(attach) + "'" + str(denominator) + '/' + str(numerator)
+        attach = int(numerator / denominator)
+        # print(denominator, numerator, attach)
+        denominator = numerator - attach * denominator
+        real_fraction = str(attach) + "'" + str(denominator) + '/' + str(numerator)
         return real_fraction
 
 def main():
